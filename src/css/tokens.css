@@ -1,0 +1,209 @@
+/* =============================================================
+   Design tokens · ITSM dashboard
+   Paleta reducida: dos colores de marca + neutros + 3 semánticos
+   (solo en superficies pequeñas). Densidad compacta.
+   ============================================================= */
+
+:root {
+  /* Brand */
+  --color-primary: #0d1b6e;
+  --color-primary-strong: #0a1454;
+  --color-primary-soft: #e8ebf7;
+  --color-primary-contrast: #ffffff;
+  --color-primary-8: rgba(13, 27, 110, 0.08);
+
+  --color-accent: #1db0f0;
+  --color-accent-strong: #0b93d4;
+  --color-accent-soft: #e6f6fe;
+
+  /* Azul de marca claro para superficies oscuras (oscuro: reemplaza al navy) */
+  --color-brand-soft: #6c8bff;
+
+  /* Superficies del shell (oscuro se separan del navy saturado) */
+  --sidebar-bg: var(--color-primary);
+  --header-bg: var(--color-primary);
+
+  /* Semánticos (badges, puntos de estado y deltas) */
+  --color-success: #0baa4b;
+  --color-success-soft: #e4f6ec;
+
+  --color-warning: #f5b700;
+  --color-warning-ink: #7a5c00;
+  --color-warning-soft: #fff6d6;
+
+  --color-danger: #e5484d;
+  --color-danger-soft: #fdecec;
+
+  /* Tercer tono de gráfico (neutro azulado, no semántico) */
+  --color-chart-neutral: #9aa3b5;
+
+  /* Gráficos: cuadrícula, ejes, cursor y pista de dona */
+  --chart-grid: #e6e8ef;
+  --chart-axis: #6b7280;
+  --chart-cursor: #e6f6fe;
+  --chart-track: #eef0f6;
+
+  /* KPI del módulo de inventario (paleta propia del panel) */
+  --kpi-1: #2f4bff;
+  --kpi-2: #1db0f0;
+  --kpi-3: #8b5cf6;
+  --kpi-4: #e5484d;
+  --kpi-5: #0baa4b;
+  --kpi-6: #ffd60a;
+  --kpi-soft-1: rgba(47, 75, 255, 0.12);
+  --kpi-soft-2: rgba(29, 176, 240, 0.14);
+  --kpi-soft-3: rgba(139, 92, 246, 0.14);
+  --kpi-soft-4: rgba(229, 72, 77, 0.12);
+  --kpi-soft-5: rgba(11, 170, 75, 0.14);
+  --kpi-soft-6: rgba(255, 214, 10, 0.18);
+
+  /* Tooltips (superficie propia para que el oscuro deje de ser navy) */
+  --tooltip-bg: #0d1b6e;
+  --tooltip-text: #ffffff;
+  --tooltip-muted: rgba(255, 255, 255, 0.72);
+  --tooltip-divider: rgba(255, 255, 255, 0.16);
+  --tooltip-border: transparent;
+
+  /* Neutrals */
+  --color-bg: #f7f7f4;
+  --color-bg-alt: #f1f2f6;
+  --color-surface: #ffffff;
+  --color-surface-2: #fbfbfd;
+  --color-border: #e6e8ef;
+  --color-border-strong: #d3d7e2;
+  --color-text: #1f2433;
+  --color-text-strong: #14192b;
+  --color-text-muted: #6b7280;
+  --color-overlay: rgba(13, 27, 110, 0.44);
+
+  /* Typography */
+  --font-sans: 'Poppins', 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+
+  --text-3xs: 0.625rem; /* 10 */
+  --text-2xs: 0.6875rem; /* 11 */
+  --text-xs: 0.75rem; /* 12 · etiquetas pequeñas */
+  --text-sm: 0.8125rem; /* 13 */
+  --text-md: 0.875rem; /* 14 */
+  --text-base: 0.875rem; /* 14 · base */
+  --text-lg: 0.9375rem; /* 15 · título de tarjeta */
+  --text-xl: 1.0625rem; /* 17 */
+  --text-2xl: 1.25rem; /* 20 · título de página */
+  --text-3xl: 1.625rem; /* 26 · número KPI */
+  --text-4xl: 2rem; /* 32 */
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+
+  /* Elevation (muy suave) */
+  --shadow-xs: 0 1px 2px rgba(20, 25, 43, 0.04);
+  --shadow-sm: 0 1px 3px rgba(20, 25, 43, 0.06), 0 1px 2px rgba(20, 25, 43, 0.04);
+  --shadow-md: 0 8px 20px -12px rgba(13, 27, 110, 0.24), 0 2px 6px rgba(20, 25, 43, 0.05);
+  --shadow-lg: 0 20px 40px -20px rgba(13, 27, 110, 0.3), 0 6px 16px rgba(20, 25, 43, 0.06);
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+
+  /* Layout */
+  --sidebar-w: 232px;
+  --sidebar-w-collapsed: 64px;
+  --header-h: 56px;
+  --content-max: 1440px;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 160ms;
+  --dur-base: 240ms;
+  --dur-slow: 380ms;
+
+  /* Escala de apilado: contenido 0 · tooltips 20 · header 30 ·
+     sidebar 40 · dropdown 45 · modales 50 · botón flotante 60 */
+  --z-content: 0;
+  --z-tooltip: 20;
+  --z-header: 30;
+  --z-sidebar: 40;
+  --z-dropdown: 45;
+  --z-modal: 50;
+  --z-overlay: 50;
+  --z-fab: 60;
+  --z-toast: 70;
+
+  color-scheme: light;
+}
+
+/* =============================================================
+   Dark mode tokens — activado via [data-theme='dark']
+   ============================================================= */
+
+[data-theme='dark'] {
+  /* El navy se sustituye por un azul claro para relleno y gráficos */
+  --color-primary: var(--color-brand-soft);
+  --color-primary-strong: #8aa3ff;
+  --color-primary-soft: rgba(108, 139, 255, 0.16);
+  --color-primary-contrast: #0a0e1f;
+  --color-primary-8: rgba(108, 139, 255, 0.12);
+
+  /* El celeste se mantiene como acento */
+  --color-accent: #1db0f0;
+  --color-accent-strong: #4cc4f7;
+  --color-accent-soft: rgba(29, 176, 240, 0.16);
+
+  --color-success: #34d399;
+  --color-success-soft: rgba(52, 211, 153, 0.16);
+
+  --color-warning: #fbbf24;
+  --color-warning-ink: #fbbf24;
+  --color-warning-soft: rgba(251, 191, 36, 0.14);
+
+  --color-danger: #f87171;
+  --color-danger-soft: rgba(248, 113, 113, 0.16);
+
+  --color-chart-neutral: #5b6585;
+
+  /* Superficies: escala azul-noche única */
+  --color-bg: #0a0e1f;
+  --color-bg-alt: #182046;
+  --color-surface: #121935;
+  --color-surface-2: #182046;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+  --color-text: #e8ecf8;
+  --color-text-strong: #f4f6fe;
+  --color-text-muted: #9aa4c7;
+  --color-overlay: rgba(4, 6, 16, 0.7);
+
+  --sidebar-bg: #0d1330;
+  --header-bg: #0d1330;
+
+  --chart-grid: rgba(255, 255, 255, 0.06);
+  --chart-axis: #9aa4c7;
+  --chart-cursor: rgba(108, 139, 255, 0.12);
+  --chart-track: rgba(255, 255, 255, 0.06);
+
+  --tooltip-bg: #182046;
+  --tooltip-text: #e8ecf8;
+  --tooltip-muted: #9aa4c7;
+  --tooltip-divider: rgba(255, 255, 255, 0.12);
+  --tooltip-border: rgba(255, 255, 255, 0.1);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.55);
+  --shadow-md: 0 8px 20px -12px rgba(0, 0, 0, 0.8), 0 2px 6px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 20px 40px -20px rgba(0, 0, 0, 0.85), 0 6px 16px rgba(0, 0, 0, 0.6);
+
+  color-scheme: dark;
+}

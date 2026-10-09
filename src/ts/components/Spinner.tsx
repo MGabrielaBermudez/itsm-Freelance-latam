@@ -1,0 +1,1 @@
+export { Spinner } from '@/views/shared/Spinner';

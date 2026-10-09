@@ -1,0 +1,79 @@
+/* =============================================================
+   Colores de dominio para gráficos (fill SVG + background)
+   Evita estilos inline: cada estado tiene su clase.
+   ============================================================= */
+
+/* ---- Relleno SVG ---- */
+
+.c-primary {
+  fill: var(--color-primary);
+}
+.c-accent {
+  fill: var(--color-accent);
+}
+.c-success {
+  fill: var(--color-success);
+}
+.c-warning {
+  fill: var(--color-warning);
+}
+.c-warning-ink {
+  fill: var(--color-warning-ink);
+}
+.c-danger {
+  fill: var(--color-danger);
+}
+.c-neutral {
+  fill: var(--color-chart-neutral);
+}
+.c-track {
+  fill: var(--chart-track);
+}
+
+/* ---- Relleno de trayectoria SVG ---- */
+
+.s-primary {
+  stroke: var(--color-primary);
+}
+.s-accent {
+  stroke: var(--color-accent);
+}
+.s-success {
+  stroke: var(--color-success);
+}
+.s-warning {
+  stroke: var(--color-warning-ink);
+}
+.s-danger {
+  stroke: var(--color-danger);
+}
+.s-neutral {
+  stroke: var(--color-chart-neutral);
+}
+
+/* ---- Fondos (swatches, barras, dots) ---- */
+
+.b-primary {
+  background: var(--color-primary);
+}
+.b-accent {
+  background: var(--color-accent);
+}
+.b-success {
+  background: var(--color-success);
+}
+.b-warning {
+  background: var(--color-warning);
+}
+.b-warning-ink {
+  background: var(--color-warning-ink);
+}
+.b-danger {
+  background: var(--color-danger);
+}
+.b-neutral {
+  background: var(--color-chart-neutral);
+}
+.b-muted {
+  background: var(--color-text-muted);
+}

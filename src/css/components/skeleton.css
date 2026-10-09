@@ -1,0 +1,96 @@
+/* ---------------- SKELETONS ----------------
+   Geometría por tokens: el TSX elige el token y el valor vive aquí.
+   Así los esqueletos no necesitan estilos inline. */
+
+.sk-w--18 { width: 18px; }
+.sk-w--22 { width: 22px; }
+.sk-w--32 { width: 32px; }
+.sk-w--36 { width: 36px; }
+.sk-w--42 { width: 42px; }
+.sk-w--45 { width: 45px; }
+.sk-w--47 { width: 47px; }
+.sk-w--59 { width: 59px; }
+.sk-w--64 { width: 64px; }
+.sk-w--72 { width: 72px; }
+.sk-w--full { width: 100%; }
+.sk-w--pct-22 { width: 22%; }
+.sk-w--pct-28 { width: 28%; }
+.sk-w--pct-32 { width: 32%; }
+.sk-w--pct-42 { width: 42%; }
+.sk-w--pct-45 { width: 45%; }
+.sk-w--pct-47 { width: 47%; }
+.sk-w--pct-59 { width: 59%; }
+.sk-w--pct-60 { width: 60%; }
+.sk-w--pct-62 { width: 62%; }
+.sk-w--pct-70 { width: 70%; }
+.sk-w--pct-71 { width: 71%; }
+.sk-w--pct-78 { width: 78%; }
+.sk-w--pct-80 { width: 80%; }
+.sk-w--pct-83 { width: 83%; }
+.sk-w--pct-95 { width: 95%; }
+
+.sk-h--9 { height: 9px; }
+.sk-h--10 { height: 10px; }
+.sk-h--11 { height: 11px; }
+.sk-h--12 { height: 12px; }
+.sk-h--18 { height: 18px; }
+.sk-h--22 { height: 22px; }
+.sk-h--26 { height: 26px; }
+.sk-h--32 { height: 32px; }
+.sk-h--34 { height: 34px; }
+.sk-h--36 { height: 36px; }
+.sk-h--40 { height: 40px; }
+.sk-h--fill { height: 100%; }
+
+.sk-r--6 { border-radius: 6px; }
+.sk-r--8 { border-radius: 8px; }
+.sk-r--9 { border-radius: 9px; }
+.sk-r--10 { border-radius: 10px; }
+.sk-r--12 { border-radius: 12px; }
+.sk-r--pill { border-radius: 999px; }
+
+/* Estructura */
+
+.sk-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sk-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sk-row--legend {
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.sk-row__grow {
+  flex: 1;
+  min-width: 0;
+}
+
+.sk-row__grow--wide {
+  min-width: 120px;
+}
+
+.sk-gap {
+  height: 6px;
+}
+
+.sk-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sk-col--donut {
+  min-height: 232px;
+}
+
+.sk-col--bar {
+  min-height: 244px;
+}

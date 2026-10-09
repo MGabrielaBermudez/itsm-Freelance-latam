@@ -1,0 +1,310 @@
+/* =============================================================
+   Componente · Tarjeta KPI (3 por fila, horizontal, 112-128px)
+   Excepción de color: cada KPI define su propio color en
+   `--kpi-color` / `--kpi-soft`. Solo se usa en el contorno, el
+   recuadro del icono y el sparkline. Nada de degradados ni fondos
+   de tarjeta coloreados.
+   ============================================================= */
+
+.kpi {
+  --kpi-color: var(--color-primary);
+  --kpi-soft: var(--color-primary-8);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 116px;
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1.5px solid var(--kpi-color);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  cursor: pointer;
+  will-change: transform;
+  z-index: 0;
+  transition: box-shadow var(--dur-base) var(--ease-out-expo);
+}
+
+.kpi:hover,
+.kpi:focus-within {
+  z-index: 1;
+  box-shadow: var(--shadow-lg);
+}
+
+.kpi:focus-visible {
+  outline: 2px solid var(--kpi-color);
+  outline-offset: 2px;
+}
+
+/* ---- Colores por tarjeta (excepción KPI) ---- */
+
+.kpi--equipos {
+  --kpi-color: #1d3fd6;
+  --kpi-soft: rgba(29, 63, 214, 0.1);
+}
+
+.kpi--freelancers {
+  --kpi-color: #1db0f0;
+  --kpi-soft: rgba(29, 176, 240, 0.1);
+}
+
+.kpi--asignaciones {
+  --kpi-color: #8b3dff;
+  --kpi-soft: rgba(139, 61, 255, 0.1);
+}
+
+.kpi--incidentes {
+  --kpi-color: #e5484d;
+  --kpi-soft: rgba(229, 72, 77, 0.1);
+}
+
+.kpi--onboarding {
+  --kpi-color: #0baa4b;
+  --kpi-soft: rgba(11, 170, 75, 0.1);
+}
+
+.kpi--stock {
+  --kpi-color: #ffd60a;
+  --kpi-soft: rgba(255, 214, 10, 0.12);
+}
+
+/* ---- Zona superior: izquierda (texto) · derecha (sparkline) ---- */
+
+.kpi__main {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-3);
+  flex: 1;
+  min-height: 84px;
+}
+
+.kpi__left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  flex: 0 0 45%;
+  min-width: 0;
+}
+
+.kpi__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.kpi__icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--kpi-soft);
+  color: var(--kpi-color);
+}
+
+.kpi__label {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.kpi__value-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.kpi__value {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-text-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi__trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-3xs);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.kpi__trend--up {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+.kpi__trend--down {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+.kpi__trend--flat {
+  background: var(--color-bg-alt);
+  color: var(--color-text-muted);
+}
+
+/* Sparkline anclado abajo-derecha: máx 40% del ancho y 48px de alto.
+   `pointer-events: none` para no robar clics/expandir; queda por
+   debajo del chevron (z-index superior). */
+.kpi__right {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 40%;
+  max-width: 40%;
+  height: 48px;
+  pointer-events: none;
+}
+
+.kpi__spark {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- Botón expandir (sobre el sparkline) ---- */
+
+.kpi__expand {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-xs);
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  color: var(--color-text-muted);
+  transition:
+    background-color var(--dur-base) var(--ease-out-expo),
+    color var(--dur-base) var(--ease-out-expo);
+}
+
+.kpi__expand:hover {
+  background: var(--color-surface);
+  color: var(--kpi-color);
+}
+
+.kpi__expand:focus-visible {
+  outline: 2px solid var(--kpi-color);
+  outline-offset: 1px;
+}
+
+.kpi__chevron {
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+
+.kpi__expand[aria-expanded='true'] .kpi__chevron {
+  transform: rotate(180deg);
+}
+
+/* ---------------- Desglose expandido ---------------- */
+
+.kpi__breakdown {
+  overflow: hidden;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.kpi__breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.kpi__breakdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--text-2xs);
+}
+
+.kpi__breakdown-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  color: var(--color-text);
+}
+
+.kpi__breakdown-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.kpi__breakdown-value {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 700;
+  color: var(--color-text-strong);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.kpi__bar {
+  width: 44px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-alt);
+  overflow: hidden;
+}
+
+.kpi__bar-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  transform-origin: left center;
+}
+
+/* ---- Modo oscuro: borde 35% (70% en hover), icono 15%, relleno 18%→0 ----
+   El fondo de la tarjeta NO se tiñe: usa la superficie normal. */
+
+[data-theme='dark'] .kpi {
+  border-width: 1px;
+  border-color: color-mix(in srgb, var(--kpi-color) 35%, transparent);
+}
+
+[data-theme='dark'] .kpi:hover,
+[data-theme='dark'] .kpi:focus-within {
+  border-color: color-mix(in srgb, var(--kpi-color) 70%, transparent);
+}
+
+[data-theme='dark'] .kpi__icon {
+  background: color-mix(in srgb, var(--kpi-color) 15%, transparent);
+}
+
+/* ---------------- SKELETON KPI ---------------- */
+
+.kpi--skeleton {
+  cursor: default;
+}
+
+.kpi--skeleton .kpi__icon {
+  background: var(--color-bg-alt);
+  color: var(--color-border-strong);
+}
+
+.kpi--skeleton:hover {
+  box-shadow: var(--shadow-sm);
+}

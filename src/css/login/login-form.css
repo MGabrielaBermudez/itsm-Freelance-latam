@@ -1,0 +1,182 @@
+/* =============================================================
+   Login · formulario (login + recuperación)
+   ============================================================= */
+
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.login__head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login__title {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.login__subtitle {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.login__panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.login__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.login__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.login__lock {
+  margin: 0;
+  color: var(--color-danger);
+  font-size: var(--text-2xs);
+}
+
+.login__back {
+  align-self: flex-start;
+  margin-bottom: 14px;
+}
+
+.login__recovery-copy {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+/* Pulso sutil al autocompletar una cuenta demo */
+.login__fields.is-autofilled .field {
+  animation: auth-field-pop 0.5s var(--ease-out-expo);
+}
+
+@keyframes auth-field-pop {
+  0% {
+    box-shadow: 0 0 0 0 var(--color-accent-soft);
+  }
+  45% {
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+/* ---------------- Alerta ---------------- */
+
+.auth-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 9px 11px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  font-size: var(--text-xs);
+}
+
+.auth-alert--warn {
+  background: var(--color-warning-soft);
+  color: var(--color-warning-ink);
+}
+
+.auth-alert svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.auth-alert__retry {
+  margin-left: 6px;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ---------------- Enlaces ---------------- */
+
+.link-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent-strong);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.link-button::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1.5px;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-fast) var(--ease-out-expo);
+}
+
+.link-button:hover::after {
+  transform: scaleX(1);
+}
+
+.link-button:focus-visible {
+  outline: none;
+  border-radius: var(--radius-xs);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+/* ---------------- Recuperación ---------------- */
+
+.recovery-done {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+}
+
+.recovery-done__title {
+  margin: 0;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.recovery-done__text {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--text-sm);
+}

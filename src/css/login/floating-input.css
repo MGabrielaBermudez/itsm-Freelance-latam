@@ -1,0 +1,181 @@
+/* =============================================================
+   Login · campo de texto con label flotante (alto 44px)
+   ============================================================= */
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  padding-right: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--dur-fast) var(--ease-out-expo),
+    box-shadow var(--dur-fast) var(--ease-out-expo);
+}
+
+.field:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--color-accent-soft);
+}
+
+.field.has-error {
+  border-color: var(--color-danger);
+}
+
+.field.has-error:focus-within {
+  box-shadow: 0 0 0 2px var(--color-danger-soft);
+}
+
+.field.is-valid {
+  border-color: var(--color-success);
+}
+
+.field.is-valid:focus-within {
+  box-shadow: 0 0 0 2px var(--color-success-soft);
+}
+
+.field.is-valid .field__icon {
+  color: var(--color-success);
+}
+
+.field.is-disabled {
+  opacity: 0.6;
+}
+
+.field__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 100%;
+  color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease-out-expo);
+}
+
+.field:focus-within .field__icon {
+  color: var(--accent-strong);
+}
+
+.field.has-error .field__icon {
+  color: var(--color-danger);
+}
+
+.field__control {
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
+
+.field__input {
+  width: 100%;
+  height: 100%;
+  padding: 15px 0 3px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: var(--text-md);
+  outline: none;
+}
+
+.field__input::placeholder {
+  color: transparent;
+}
+
+.field__label {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: var(--text-md);
+  pointer-events: none;
+  transition:
+    top var(--dur-fast) var(--ease-out-expo),
+    transform var(--dur-fast) var(--ease-out-expo),
+    font-size var(--dur-fast) var(--ease-out-expo),
+    color var(--dur-fast) var(--ease-out-expo);
+}
+
+.field__input:focus + .field__label,
+.field__input:not(:placeholder-shown) + .field__label,
+.field.is-filled .field__label {
+  top: 5px;
+  transform: translateY(0);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.02em;
+  color: var(--accent-strong);
+}
+
+.field.has-error .field__input:focus + .field__label,
+.field.has-error .field__input:not(:placeholder-shown) + .field__label,
+.field.has-error.is-filled .field__label {
+  color: var(--color-danger);
+}
+
+.field__trailing {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.field__valid {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  margin-right: 2px;
+  color: var(--color-success);
+}
+
+.field__toggle {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  transition:
+    background-color var(--dur-fast) var(--ease-out-expo),
+    color var(--dur-fast) var(--ease-out-expo);
+}
+
+.field__toggle-icon {
+  display: inline-flex;
+}
+
+.field__toggle:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.field__toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+.field__error {
+  margin: 5px 0 0;
+  overflow: hidden;
+  color: var(--color-danger);
+  font-size: var(--text-2xs);
+}
+
+.field__hint {
+  margin: 5px 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-2xs);
+}
+
+.field__caps {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-warning-ink);
+}

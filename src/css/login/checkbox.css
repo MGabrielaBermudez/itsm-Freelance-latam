@@ -1,0 +1,56 @@
+/* =============================================================
+   Login · checkbox personalizado (pop + check dibujado)
+   ============================================================= */
+
+.checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.checkbox__box {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  color: var(--color-primary-contrast);
+  transition:
+    border-color var(--dur-fast) var(--ease-out-expo),
+    background-color var(--dur-fast) var(--ease-out-expo);
+}
+
+.checkbox:hover .checkbox__box {
+  border-color: var(--accent);
+}
+
+.checkbox__input:checked + .checkbox__box {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+.checkbox__input:focus-visible + .checkbox__box {
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+.checkbox.is-disabled {
+  cursor: default;
+  opacity: 0.6;
+}

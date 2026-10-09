@@ -1,0 +1,54 @@
+/* =============================================================
+   Transición de tema · 200ms
+   Se anima solo el color de fondo, los bordes y el texto.
+   Importar al final para que prevalezca sobre transiciones
+   locales (p. ej. box-shadow del KPI).
+   ============================================================= */
+
+body,
+.app-shell,
+.sidebar,
+.app-header,
+.card,
+.kpi,
+.chip,
+.badge,
+.select,
+.search-field,
+.state__icon,
+.status-box,
+.tooltip,
+.table thead th {
+  transition:
+    background-color 300ms var(--ease-out-expo),
+    border-color 300ms var(--ease-out-expo),
+    color 300ms var(--ease-out-expo);
+}
+
+/* El KPI conserva su transición de sombra + las de tema */
+.kpi {
+  transition:
+    box-shadow var(--dur-base) var(--ease-out-expo),
+    background-color 300ms var(--ease-out-expo),
+    border-color 300ms var(--ease-out-expo),
+    color 300ms var(--ease-out-expo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .app-shell,
+  .sidebar,
+  .app-header,
+  .card,
+  .kpi,
+  .chip,
+  .badge,
+  .select,
+  .search-field,
+  .state__icon,
+  .status-box,
+  .tooltip,
+  .table thead th {
+    transition: none;
+  }
+}

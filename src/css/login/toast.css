@@ -1,0 +1,56 @@
+/* =============================================================
+   Login · aviso flotante
+   ============================================================= */
+
+.toast-region {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: var(--z-toast);
+  display: flex;
+  justify-content: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(90vw, 400px);
+  padding: 10px 10px 10px 14px;
+  border-radius: var(--radius-md);
+  background: var(--text);
+  color: var(--bg);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--text-xs);
+  pointer-events: auto;
+}
+
+.toast--success {
+  background: var(--color-success);
+  color: #fff;
+}
+
+.toast--error {
+  background: var(--color-danger);
+  color: #fff;
+}
+
+.toast__close {
+  display: grid;
+  place-items: center;
+  color: inherit;
+  opacity: 0.75;
+}
+
+.toast__close:hover {
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .toast-region {
+    bottom: 16px;
+    width: calc(100% - 48px);
+  }
+}

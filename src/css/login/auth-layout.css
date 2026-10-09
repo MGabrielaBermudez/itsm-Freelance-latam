@@ -1,0 +1,200 @@
+/* =============================================================
+   Login · lienzo único: azul profundo → transición orgánica → blanco.
+   Sin paneles con línea divisoria y sin tarjeta pesada: el branding y
+   el formulario conviven sobre el mismo lienzo continuo.
+   ============================================================= */
+
+.auth {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 100dvh;
+  overflow: hidden;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 400ms var(--ease-out-expo);
+}
+
+/* Derrame azul: el degradado vive en el contenedor (no en un panel) para
+   que el desvanecimiento hacia el fondo sea orgánico, sin línea visible. */
+.auth::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--auth-wash);
+}
+
+/* ---------------- Panel de marca ---------------- */
+
+.auth__brand {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 48%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px;
+}
+
+.auth__brand-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth__logo {
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 12px 28px -14px rgba(3, 7, 32, 0.7);
+  color: #fff;
+}
+
+.auth__logo--sm {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-soft);
+  box-shadow: none;
+  color: var(--color-primary);
+}
+
+.auth__brand-title {
+  margin: 0;
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+.auth__brand-sub {
+  margin: 0;
+  max-width: 360px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: var(--text-md);
+  line-height: 1.6;
+}
+
+.auth__points {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.auth__points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.auth__points svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--color-accent);
+}
+
+/* ---------------- Panel del formulario ---------------- */
+
+.auth__form {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  padding: 48px 32px;
+  background: transparent;
+}
+
+.auth__form-topbar {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  z-index: 2;
+}
+
+.auth__theme {
+  color: var(--text-muted);
+}
+
+.auth__theme:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.auth__compact-brand {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  padding-right: 48px;
+  color: var(--text);
+  font-size: var(--text-lg);
+}
+
+/* Superficie abierta del formulario: sin caja, sobre el blanco. */
+.auth__card {
+  width: 100%;
+  max-width: 440px;
+  margin-block: auto;
+}
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 1023px) {
+  .auth {
+    overflow: visible;
+  }
+
+  /* El lienzo azul es una pieza de la versión de escritorio */
+  .auth::before {
+    opacity: 0;
+  }
+
+  .auth__brand {
+    display: none;
+  }
+
+  .auth__form {
+    justify-content: flex-start;
+    overflow: visible;
+    padding: 28px 16px 48px;
+  }
+
+  .auth__compact-brand {
+    display: flex;
+  }
+
+  .auth__card {
+    max-width: 420px;
+    margin-block: 4px 0;
+  }
+
+  .auth__form-topbar {
+    top: 18px;
+    right: 18px;
+  }
+}

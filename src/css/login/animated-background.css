@@ -1,0 +1,176 @@
+/* =============================================================
+   Login · lienzo abstracto del panel de marca.
+   Composición: lavados de luz ambiental + líneas curvas finísimas
+   (flujos de datos / ondas) + grano. Sin orbes, sin cristales y
+   sin formas circulares sueltas: la escena se funde con el azul y
+   se disuelve hacia la derecha para enlazar con el formulario.
+   ============================================================= */
+
+/* ---------------- Variables por tema ---------------- */
+
+:root {
+  /* Lavados de luz (gradientes radiales difusos, sin borde visible) */
+  --abg-glow-a: rgba(84, 146, 255, 0.22);
+  --abg-glow-b: rgba(29, 176, 240, 0.16);
+
+  /* Líneas curvas: blanco translúcido y azul de marca */
+  --abg-line: rgba(255, 255, 255, 0.12);
+  --abg-line-soft: rgba(108, 139, 255, 0.2);
+
+  /* Derrame azul del lienzo completo (vive en .auth::before) */
+  --auth-wash: linear-gradient(
+    90deg,
+    #0a1454 0%,
+    #0c1d66 28%,
+    #0d1b6e 42%,
+    rgba(13, 27, 110, 0.92) 49%,
+    rgba(13, 27, 110, 0.44) 57%,
+    rgba(13, 27, 110, 0.14) 63%,
+    rgba(247, 247, 244, 0) 70%
+  );
+}
+
+[data-theme='dark'] {
+  --abg-glow-a: rgba(108, 139, 255, 0.16);
+  --abg-glow-b: rgba(29, 176, 240, 0.12);
+  --abg-line: rgba(255, 255, 255, 0.09);
+  --abg-line-soft: rgba(120, 170, 255, 0.14);
+
+  --auth-wash: linear-gradient(
+    90deg,
+    #0d1330 0%,
+    #0b1026 34%,
+    #0a0e1f 48%,
+    rgba(10, 14, 31, 0.86) 54%,
+    rgba(10, 14, 31, 0.4) 62%,
+    rgba(10, 14, 31, 0) 72%
+  );
+}
+
+/* ---------------- Contenedor ---------------- */
+
+.abg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  /* La escena se disuelve hacia la derecha: provoca la transición
+     orgánica del azul al fondo, sin bordes ni cortes. */
+  -webkit-mask-image: linear-gradient(100deg, #000 50%, transparent 98%);
+  mask-image: linear-gradient(100deg, #000 50%, transparent 98%);
+}
+
+/* Base del lienzo: acentúa la profundidad del azul en el borde izquierdo. */
+.abg__canvas {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 10% 6%, rgba(84, 146, 255, 0.12), transparent 55%),
+    linear-gradient(100deg, rgba(3, 7, 32, 0.14), transparent 46%);
+}
+
+/* ---------------- Lavados de luz ----------------
+   Gradientes radiales difusos (alpha muy bajo, blur amplio). No tienen
+   radio visible: son luz ambiente integrada en el fondo, no figuras. */
+
+.abg__glow {
+  position: absolute;
+  pointer-events: none;
+  background: radial-gradient(50% 50% at 50% 50%, var(--abg-glow-a), transparent 72%);
+  filter: blur(56px);
+  will-change: transform, opacity;
+}
+
+.abg__glow--a {
+  width: 820px;
+  height: 640px;
+  top: -16%;
+  left: -20%;
+  animation: abg-breathe 26s var(--ease-in-out-soft) infinite;
+}
+
+.abg__glow--b {
+  width: 660px;
+  height: 520px;
+  bottom: -22%;
+  left: 6%;
+  background-image: radial-gradient(50% 50% at 50% 50%, var(--abg-glow-b), transparent 72%);
+  animation: abg-breathe 34s var(--ease-in-out-soft) infinite reverse;
+}
+
+@keyframes abg-breathe {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(12px, 10px, 0);
+  }
+}
+
+/* ---------------- Líneas curvas ----------------
+   Trazos de 1px: ondas que sugieren conexiones de red o flujos de datos.
+   Apenas derivan (movimiento muy lento) y quedan en segundo plano. */
+
+.abg__lines {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 130%;
+  height: 100%;
+  animation: abg-drift 54s var(--ease-in-out-soft) infinite alternate;
+}
+
+.abg__lines path {
+  stroke: var(--abg-line);
+  stroke-width: 1;
+  stroke-linecap: round;
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.abg__lines path:nth-child(2n) {
+  stroke: var(--abg-line-soft);
+}
+
+.abg__lines path:nth-child(3) {
+  stroke-dasharray: 2 7;
+}
+
+.abg__lines path:nth-child(5) {
+  stroke-dasharray: 1.5 6;
+}
+
+@keyframes abg-drift {
+  from {
+    transform: translate3d(0, 4px, 0);
+  }
+  to {
+    transform: translate3d(-16px, -10px, 0);
+  }
+}
+
+/* ---------------- Grano / ruido ---------------- */
+
+.abg__noise {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------------- Reduced motion ---------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .abg__glow--a,
+  .abg__glow--b,
+  .abg__lines {
+    animation: none;
+  }
+}
