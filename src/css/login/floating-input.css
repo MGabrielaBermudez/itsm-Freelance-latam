@@ -13,8 +13,9 @@
   height: 46px;
   padding-right: 8px;
   background: var(--surface);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border);
   border-radius: var(--radius-md);
+  box-shadow: var(--auth-field-inset);
   transition:
     border-color var(--dur-fast) var(--ease-out-expo),
     box-shadow var(--dur-fast) var(--ease-out-expo);
@@ -22,7 +23,7 @@
 
 .field:focus-within {
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px var(--color-accent-soft);
+  box-shadow: var(--auth-field-inset), var(--auth-field-focus-ring);
 }
 
 .field.has-error {
@@ -30,7 +31,7 @@
 }
 
 .field.has-error:focus-within {
-  box-shadow: 0 0 0 2px var(--color-danger-soft);
+  box-shadow: var(--auth-field-inset), var(--auth-field-error-ring);
 }
 
 .field.is-valid {
@@ -38,7 +39,7 @@
 }
 
 .field.is-valid:focus-within {
-  box-shadow: 0 0 0 2px var(--color-success-soft);
+  box-shadow: var(--auth-field-inset), var(--auth-field-valid-ring);
 }
 
 .field.is-valid .field__icon {

@@ -293,3 +293,32 @@ export const IconEdit = (p: IconProps) => (
     <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" />
   </svg>
 );
+
+export const IconCopy = (p: IconProps) => (
+  <svg {...base(p)}>
+    <rect x="9" y="9" width="11" height="11" rx="2" />
+    <path d="M5 15V5a2 2 0 012-2h10" />
+  </svg>
+);
+
+export const IconUser = (p: IconProps) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="8" r="3.5" />
+    <path d="M5 20v-1a6 6 0 016-6h2a6 6 0 016 6v1" />
+  </svg>
+);
+
+export const IconGear = (p: IconProps) => (
+  <svg {...base(p)}>
+    <circle cx="12" cy="12" r="3.4" />
+    <path d="M12 2v2.4M12 19.6V22M2 12h2.4M19.6 12H22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M19.1 4.9l-1.7 1.7M6.6 17.4l-1.7 1.7" />
+  </svg>
+);
+
+export const IconHeadset = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M4 14v-2a8 8 0 0116 0v2" />
+    <rect x="3" y="13" width="4.5" height="6" rx="2" />
+    <rect x="16.5" y="13" width="4.5" height="6" rx="2" />
+  </svg>
+);

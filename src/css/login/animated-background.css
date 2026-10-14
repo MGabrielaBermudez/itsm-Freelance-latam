@@ -1,9 +1,8 @@
 /* =============================================================
-   Login · lienzo abstracto del panel de marca.
-   Composición: lavados de luz ambiental + líneas curvas finísimas
-   (flujos de datos / ondas) + grano. Sin orbes, sin cristales y
-   sin formas circulares sueltas: la escena se funde con el azul y
-   se disuelve hacia la derecha para enlazar con el formulario.
+   Login · lienzo abstracto del panel de marca y panel del formulario.
+   Composición: lavados de luz ambiental + flujos de datos con nodos de
+   red brillantes e interconectados + grano. La escena se funde con el
+   azul y desemboca en el panel crema del formulario, sin líneas duras.
    ============================================================= */
 
 /* ---------------- Variables por tema ---------------- */
@@ -17,16 +16,24 @@
   --abg-line: rgba(255, 255, 255, 0.12);
   --abg-line-soft: rgba(108, 139, 255, 0.2);
 
+  /* Red de nodos: brillo y color de cada nodo */
+  --abg-node: rgba(255, 255, 255, 0.55);
+  --abg-node-core: #dfeaff;
+  --abg-node-glow: rgba(108, 139, 255, 0.75);
+  --abg-pulse: rgba(120, 160, 255, 0.5);
+
+  /* Panel derecho del formulario: crema cálido (en claro) */
+  --auth-panel-bg: #faf7f1;
+
   /* Derrame azul del lienzo completo (vive en .auth::before) */
   --auth-wash: linear-gradient(
     90deg,
     #0a1454 0%,
-    #0c1d66 28%,
+    #0c1d66 30%,
     #0d1b6e 42%,
-    rgba(13, 27, 110, 0.92) 49%,
-    rgba(13, 27, 110, 0.44) 57%,
-    rgba(13, 27, 110, 0.14) 63%,
-    rgba(247, 247, 244, 0) 70%
+    rgba(13, 27, 110, 0.55) 47%,
+    rgba(13, 27, 110, 0.12) 51%,
+    rgba(250, 247, 241, 0) 54%
   );
 }
 
@@ -36,15 +43,25 @@
   --abg-line: rgba(255, 255, 255, 0.09);
   --abg-line-soft: rgba(120, 170, 255, 0.14);
 
+  --abg-node: rgba(255, 255, 255, 0.4);
+  --abg-node-core: #eaf0ff;
+  --abg-node-glow: rgba(120, 170, 255, 0.55);
+  --abg-pulse: rgba(120, 170, 255, 0.35);
+
+  --auth-panel-bg: #0d1330;
+
   --auth-wash: linear-gradient(
     90deg,
     #0d1330 0%,
-    #0b1026 34%,
+    #0b1026 38%,
     #0a0e1f 48%,
-    rgba(10, 14, 31, 0.86) 54%,
-    rgba(10, 14, 31, 0.4) 62%,
-    rgba(10, 14, 31, 0) 72%
+    rgba(10, 14, 31, 0.6) 52%,
+    rgba(10, 14, 31, 0) 58%
   );
+}
+
+[data-theme='dark'] .auth__form {
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.045);
 }
 
 /* ---------------- Contenedor ---------------- */
@@ -125,7 +142,29 @@
   animation: abg-drift 54s var(--ease-in-out-soft) infinite alternate;
 }
 
-.abg__lines path {
+@keyframes abg-drift {
+  from {
+    transform: translate3d(0, 4px, 0);
+  }
+  to {
+    transform: translate3d(-16px, -10px, 0);
+  }
+}
+
+/* ---------------- Red de nodos ----------------
+   Malla de conexiones diagonales (flujos de datos) y bandas que unen
+   los nodos de cada constelación. Los nodos brillan con un halo de luz
+   y los "core" emiten un pulso expansivo constante. */
+
+.abg__mesh path {
+  stroke: var(--abg-line-soft);
+  stroke-width: 1;
+  stroke-dasharray: 1 6;
+  opacity: 0.8;
+  vector-effect: non-scaling-stroke;
+}
+
+.abg__waves path {
   stroke: var(--abg-line);
   stroke-width: 1;
   stroke-linecap: round;
@@ -133,24 +172,129 @@
   vector-effect: non-scaling-stroke;
 }
 
-.abg__lines path:nth-child(2n) {
+.abg__waves path:nth-child(2n) {
   stroke: var(--abg-line-soft);
 }
 
-.abg__lines path:nth-child(3) {
+.abg__waves path:nth-child(3) {
   stroke-dasharray: 2 7;
 }
 
-.abg__lines path:nth-child(5) {
+.abg__waves path:nth-child(5) {
   stroke-dasharray: 1.5 6;
 }
 
-@keyframes abg-drift {
-  from {
-    transform: translate3d(0, 4px, 0);
+.abg__band {
+  stroke: var(--abg-line);
+  stroke-width: 1;
+  stroke-dasharray: 3 6;
+  opacity: 0.55;
+  vector-effect: non-scaling-stroke;
+}
+
+.abg__node {
+  fill: var(--abg-node);
+  filter: drop-shadow(0 0 3px var(--abg-node-glow));
+}
+
+.abg__node.is-core {
+  fill: var(--abg-node-core);
+  filter: drop-shadow(0 0 6px var(--abg-node-glow));
+}
+
+.abg__node-rim {
+  fill: none;
+  stroke: var(--abg-node-glow);
+  stroke-width: 1;
+  opacity: 0.28;
+}
+
+.abg__pulse {
+  fill: none;
+  stroke: var(--abg-pulse);
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: abg-node-pulse 3.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes abg-node-pulse {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.45);
   }
-  to {
-    transform: translate3d(-16px, -10px, 0);
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}
+
+.abg__data-pulses path {
+  stroke: var(--abg-node-glow);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-dasharray: 0 10;
+  fill: none;
+  opacity: 0;
+  animation: abg-data-flow 4.6s cubic-bezier(0.25, 0.8, 0.25, 1) infinite;
+  vector-effect: non-scaling-stroke;
+}
+
+.abg__data-pulses path:nth-child(2n) {
+  stroke: var(--abg-node-core);
+  animation-duration: 5.4s;
+  animation-delay: 0.8s;
+}
+
+.abg__data-pulses path:nth-child(3n) {
+  animation-duration: 6.2s;
+  animation-delay: 1.6s;
+}
+
+@keyframes abg-data-flow {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+  15% {
+    opacity: 0.45;
+  }
+  55% {
+    opacity: 0.18;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: -200;
+  }
+}
+
+.abg__particles .abg__particle {
+  fill: var(--abg-node-core);
+  opacity: 0;
+  filter: drop-shadow(0 0 4px var(--abg-node-glow));
+  animation: abg-float 18s ease-in-out infinite;
+}
+
+@keyframes abg-float {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  12% {
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(-10px, -6px, 0);
+  }
+  88% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(6px, 10px, 0);
   }
 }
 
@@ -170,7 +314,10 @@
 @media (prefers-reduced-motion: reduce) {
   .abg__glow--a,
   .abg__glow--b,
-  .abg__lines {
+  .abg__lines,
+  .abg__pulse,
+  .abg__data-pulses path,
+  .abg__particles .abg__particle {
     animation: none;
   }
 }

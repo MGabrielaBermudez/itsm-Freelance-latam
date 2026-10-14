@@ -4,12 +4,14 @@ import type { DemoAccount } from '@/models';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { demoContainer, demoItem, demoItemReduced } from '@/animations';
 import { EASE_OUT_EXPO, TWEEN } from '@/motion/presets';
-import { IconChevronRight } from '@/components/Icons';
+import { IconChevronRight, IconCopy } from '@/components/Icons';
 
 interface DemoAccountsProps {
   accounts: readonly DemoAccount[];
   onPick: (account: DemoAccount) => void;
   disabled?: boolean;
+  /** Correo de la cuenta que está autocompletando/entrando (se resalta). */
+  activeEmail?: string | null;
 }
 
 /** Rol → color discreto: navy, cian y gris (sin más colores). */
@@ -26,15 +28,18 @@ interface DemoItemProps {
   onPick: (account: DemoAccount) => void;
   disabled: boolean;
   reduced: boolean;
+  active: boolean;
 }
 
-/** Fila de cuenta demo: pop suave al pulsar; shake si está desactivada. */
-function DemoItem({ account, onPick, disabled, reduced }: DemoItemProps) {
+/** Tarjeta de cuenta demo: entrar la autocompleta; botón "Copiar" copia credenciales. */
+function DemoItem({ account, onPick, disabled, reduced, active }: DemoItemProps) {
   const controls = useAnimation();
+  const [copied, setCopied] = useState(false);
 
-  const handleClick = (): void => {
-    if (disabled) return;
-    if (account.disabled) {
+  const isDisabled = disabled || account.disabled;
+
+  const handlePick = (): void => {
+    if (isDisabled) {
       if (!reduced) {
         void controls.start({ x: SHAKE, transition: { duration: 0.4, ease: 'easeInOut' } });
       }
@@ -46,20 +51,58 @@ function DemoItem({ account, onPick, disabled, reduced }: DemoItemProps) {
     }
   };
 
+  const handleCopy = async (): Promise<void> => {
+    const text = `email=${account.email}\npassword=${account.password}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }
+  };
+
   return (
-    <motion.li variants={reduced ? demoItemReduced : demoItem}>
-      <motion.button
-        type="button"
-        className={`demo__item${account.disabled ? ' is-disabled' : ''}`}
-        onClick={handleClick}
-        disabled={disabled}
+    <motion.li variants={reduced ? demoItemReduced : demoItem} className="demo__card-wrap">
+      <motion.div
+        className={`demo__card${account.disabled ? ' is-disabled' : ''}${active ? ' is-active' : ''}`}
         animate={controls}
       >
-        <span className={`demo__role ${ROLE_CLASS[account.role]}`}>{account.roleLabel}</span>
-        <span className="demo__email">{account.email}</span>
-        <code className="demo__pass">{account.password}</code>
-        {account.disabled && <span className="demo__flag">Cuenta desactivada</span>}
-      </motion.button>
+        <div className="demo__card-top">
+          <span className={`demo__role ${ROLE_CLASS[account.role]}`}>{account.roleLabel}</span>
+          {account.disabled && <span className="demo__flag">Cuenta desactivada</span>}
+          {active && <span className="demo__spinner" aria-hidden="true" />}
+        </div>
+        <div className="demo__card-body">
+          <span className="demo__email" title={account.email}>
+            {account.email}
+          </span>
+          <span className="demo__pass-wrap">
+            <code className="demo__pass">{account.password}</code>
+          </span>
+        </div>
+        <div className="demo__card-actions">
+          <button
+            type="button"
+            className="demo__action demo__action--enter"
+            onClick={handlePick}
+            disabled={isDisabled}
+          >
+            {active ? 'Entrando…' : 'Usar esta cuenta'}
+          </button>
+          <button
+            type="button"
+            className="demo__action demo__action--copy"
+            onClick={handleCopy}
+            aria-label={`Copiar credenciales de ${account.email}`}
+            title={copied ? 'Copiado' : 'Copiar email y contraseña'}
+          >
+            <IconCopy width={16} height={16} />
+            <span className="demo__copy-label">{copied ? 'Copiado' : 'Copiar'}</span>
+          </button>
+        </div>
+      </motion.div>
     </motion.li>
   );
 }
@@ -68,7 +111,7 @@ function DemoItem({ account, onPick, disabled, reduced }: DemoItemProps) {
  * Sección colapsable con las cuentas de prueba. La lista tiene scroll
  * interno acotado para que la tarjeta nunca desborde la pantalla.
  */
-export function DemoAccounts({ accounts, onPick, disabled }: DemoAccountsProps) {
+export function DemoAccounts({ accounts, onPick, disabled, activeEmail }: DemoAccountsProps) {
   const reduced = useReducedMotion();
   const [open, setOpen] = useState(true);
   const listId = useId();
@@ -115,6 +158,7 @@ export function DemoAccounts({ accounts, onPick, disabled }: DemoAccountsProps) 
                   onPick={onPick}
                   disabled={Boolean(disabled)}
                   reduced={reduced}
+                  active={activeEmail === account.email}
                 />
               ))}
             </motion.ul>
@@ -123,7 +167,7 @@ export function DemoAccounts({ accounts, onPick, disabled }: DemoAccountsProps) 
       </AnimatePresence>
 
       <p className="demo__hint">
-        Pulsa una cuenta para rellenar el formulario. Credenciales solo para esta demo.
+        Elige una cuenta para autocompletar el formulario o copia sus credenciales para usarlas manualmente.
       </p>
     </section>
   );

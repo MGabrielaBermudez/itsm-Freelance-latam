@@ -45,6 +45,7 @@ export function LoginForm({ redirectTo, demoAccounts }: LoginFormProps) {
   const [remember, setRemember] = useState(true);
   const [touched, setTouched] = useState({ email: false, password: false });
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
+  const [pendingAccount, setPendingAccount] = useState<string | null>(null);
   const [formError, setFormError] = useState<{ code: AuthErrorCode | 'locked'; message: string } | null>(
     null,
   );
@@ -56,6 +57,7 @@ export function LoginForm({ redirectTo, demoAccounts }: LoginFormProps) {
   const [typing, setTyping] = useState(false);
   const autofillTimer = useRef<number | null>(null);
   const typeTimer = useRef<number | null>(null);
+  const submitTimer = useRef<number | null>(null);
 
   const emailError = validateEmail(email);
   const passwordError = validatePassword(password);
@@ -81,6 +83,7 @@ export function LoginForm({ redirectTo, demoAccounts }: LoginFormProps) {
     () => () => {
       if (autofillTimer.current !== null) window.clearTimeout(autofillTimer.current);
       if (typeTimer.current !== null) window.clearInterval(typeTimer.current);
+      if (submitTimer.current !== null) window.clearTimeout(submitTimer.current);
     },
     [],
   );
@@ -90,6 +93,11 @@ export function LoginForm({ redirectTo, demoAccounts }: LoginFormProps) {
       window.clearInterval(typeTimer.current);
       typeTimer.current = null;
     }
+    if (submitTimer.current !== null) {
+      window.clearTimeout(submitTimer.current);
+      submitTimer.current = null;
+    }
+    setPendingAccount(null);
     setTyping(false);
   }, []);
 
@@ -100,6 +108,54 @@ export function LoginForm({ redirectTo, demoAccounts }: LoginFormProps) {
       transition: { duration: 0.45, ease: 'easeInOut' },
     });
   }, [controls, reduced]);
+
+  /** Ejecuta el inicio de sesión y la secuencia de éxito (spinner → check → salida). */
+  const runLogin = useCallback(
+    async (creds: { email: string; password: string; remember: boolean }): Promise<void> => {
+      if (locked) return;
+
+      setSubmitState('loading');
+      setFormError(null);
+
+      try {
+        await login(creds);
+        setSubmitState('success');
+        if (!reduced) {
+          await controls.start({
+            opacity: 0,
+            y: -10,
+            transition: { duration: 0.3, ease: EASE_OUT_EXPO },
+          });
+        }
+        navigate(redirectTo, { replace: true });
+      } catch (error) {
+        setSubmitState('idle');
+        setPendingAccount(null);
+        const code = error instanceof AuthError ? error.code : 'network';
+
+        if (code === 'invalid_credentials') {
+          const nextAttempts = attempts + 1;
+          setAttempts(nextAttempts);
+          shake();
+          emailRef.current?.focus();
+
+          if (nextAttempts >= MAX_ATTEMPTS) {
+            setLockUntil(Date.now() + LOCK_MS);
+            setFormError({
+              code: 'locked',
+              message: `Demasiados intentos fallidos. Espera ${LOCK_MS / 1000} s para volver a probar.`,
+            });
+          } else {
+            setFormError({ code, message: ERROR_MESSAGE[code] });
+          }
+          return;
+        }
+
+        setFormError({ code, message: ERROR_MESSAGE[code] });
+      }
+    },
+    [login, reduced, controls, navigate, redirectTo, locked, attempts, shake],
+  );
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
@@ -124,44 +180,7 @@ export function LoginForm({ redirectTo, demoAccounts }: LoginFormProps) {
     }
     if (locked) return;
 
-    setSubmitState('loading');
-    setFormError(null);
-
-    try {
-      await login({ email, password, remember });
-      setSubmitState('success');
-      if (!reduced) {
-        await controls.start({
-          opacity: 0,
-          y: -10,
-          transition: { duration: 0.3, ease: EASE_OUT_EXPO },
-        });
-      }
-      navigate(redirectTo, { replace: true });
-    } catch (error) {
-      setSubmitState('idle');
-      const code = error instanceof AuthError ? error.code : 'network';
-
-      if (code === 'invalid_credentials') {
-        const nextAttempts = attempts + 1;
-        setAttempts(nextAttempts);
-        shake();
-        emailRef.current?.focus();
-
-        if (nextAttempts >= MAX_ATTEMPTS) {
-          setLockUntil(Date.now() + LOCK_MS);
-          setFormError({
-            code: 'locked',
-            message: `Demasiados intentos fallidos. Espera ${LOCK_MS / 1000} s para volver a probar.`,
-          });
-        } else {
-          setFormError({ code, message: ERROR_MESSAGE[code] });
-        }
-        return;
-      }
-
-      setFormError({ code, message: ERROR_MESSAGE[code] });
-    }
+    await runLogin({ email, password, remember });
   };
 
   const handlePickAccount = (account: DemoAccount): void => {
@@ -176,8 +195,11 @@ export function LoginForm({ redirectTo, demoAccounts }: LoginFormProps) {
     if (reduced) {
       setEmail(account.email);
       setPassword(account.password);
+      setPendingAccount(account.email);
       autofillTimer.current = window.setTimeout(() => setAutofilled(false), 600);
-      passwordRef.current?.focus();
+      submitTimer.current = window.setTimeout(() => {
+        void runLogin({ email: account.email, password: account.password, remember: true });
+      }, 320);
       return;
     }
 
@@ -201,6 +223,10 @@ export function LoginForm({ redirectTo, demoAccounts }: LoginFormProps) {
         }
         setTyping(false);
         setAutofilled(false);
+        setPendingAccount(account.email);
+        submitTimer.current = window.setTimeout(() => {
+          void runLogin({ email: account.email, password: account.password, remember: true });
+        }, 260);
         passwordRef.current?.focus();
       }
     }, 30);
@@ -414,7 +440,12 @@ export function LoginForm({ redirectTo, demoAccounts }: LoginFormProps) {
       </AnimatePresence>
 
       {mode === 'login' && demoAccounts.length > 0 && (
-        <DemoAccounts accounts={demoAccounts} onPick={handlePickAccount} disabled={locked} />
+        <DemoAccounts
+          accounts={demoAccounts}
+          onPick={handlePickAccount}
+          disabled={locked || submitState !== 'idle'}
+          activeEmail={pendingAccount}
+        />
       )}
     </motion.form>
   );
