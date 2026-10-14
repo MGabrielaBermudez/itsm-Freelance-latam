@@ -53,11 +53,9 @@ export function clearSession(): void {
  * ¿Mostrar el panel de cuentas demo?
  * - `VITE_SHOW_DEMO=true` lo fuerza.
  * - `VITE_SHOW_DEMO=false` lo oculta.
- * - Sin definir, se muestra solo en desarrollo (`import.meta.env.DEV`).
+ * - Sin definir, se muestra siempre (incluido producción/Vercel).
  */
-export const DEMO_ENABLED =
-  import.meta.env.VITE_SHOW_DEMO === 'true' ||
-  (import.meta.env.VITE_SHOW_DEMO === undefined && import.meta.env.DEV);
+export const DEMO_ENABLED = import.meta.env.VITE_SHOW_DEMO !== 'false';
 
 /**
  * Probabilidad de fallo de red simulado (0 = desactivado por defecto
