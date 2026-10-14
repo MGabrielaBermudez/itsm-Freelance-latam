@@ -25,7 +25,10 @@ interface TicketsPendientesProps {
 export function TicketsPendientes({ items, isLoading = false }: TicketsPendientesProps) {
   const navigate = useNavigate();
 
-  const openRow = (href: string): void => navigate(href);
+  const openRow = (href: string): void => {
+    // intentional: useNavigate returns void in non-redirect cases
+    void navigate(href);
+  };
 
   const handleKey = (event: KeyboardEvent<HTMLTableRowElement>, href: string): void => {
     if (event.key === 'Enter') {
