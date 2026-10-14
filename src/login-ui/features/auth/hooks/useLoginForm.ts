@@ -26,7 +26,7 @@ export function useLoginForm(onSuccess?: () => void): UseLoginFormResult {
       if (!form.submitAndValidate()) return;
       setSubmitState('loading');
       setServerError(null);
-      void signIn({ username: form.values.username, password: form.values.password }).then((result) => {
+      void signIn({ username: form.values.username, password: form.values.password }).then((result: any) => {
         if (result.ok) {
           setSubmitState('success');
           onSuccess?.();
